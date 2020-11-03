@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <istream>
 #include <string>
 #include <vector>
 #include<sstream>
@@ -20,6 +21,32 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
+    ifstream InputFile(input);
+
+    vector<vector<string>> readdata;
+    string line;
+    int i = 0;
+    while (getline(InputFile, line)) {
+
+        string data;
+        readdata.push_back(vector<string>());
+        istringstream exist(line);
+
+        while (exist >> data) {
+
+            if (data == "%") {
+                break;
+            }
+            else {
+                readdata[i].push_back(data);
+            }
+        }
+        i++;
+    }
+
+    cout << readdata[1][0] <<" "<<readdata.size()<< endl; // read testing purposes
+
+    
 
     cout << input << definition << output;
 
