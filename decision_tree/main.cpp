@@ -23,13 +23,13 @@ int main(int argc, char* argv[]) {
 
     ifstream InputFile(input);
 
-    vector<vector<string>> readdata;
+    vector<vector<string>> inputdata;
     string line;
     int i = 0;
     while (getline(InputFile, line)) {
 
         string data;
-        readdata.push_back(vector<string>());
+        inputdata.push_back(vector<string>());
         istringstream exist(line);
 
         while (exist >> data) {
@@ -38,13 +38,15 @@ int main(int argc, char* argv[]) {
                 break;
             }
             else {
-                readdata[i].push_back(data);
+                inputdata[i].push_back(data);
             }
         }
         i++;
     }
+    InputFile.close();
 
-    cout << readdata[1][0] <<" "<<readdata.size()<< endl; // read testing purposes
+
+    cout << inputdata[1][0] <<" "<<inputdata.size()<< endl; // read testing purposes
 
     
 
