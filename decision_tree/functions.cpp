@@ -72,11 +72,17 @@ int switchcontrol(string input, string definition, string output) {
     return 1;
 }
 
+void showFiles(string input, string definition, string output) {
+    cout << "Input file:        " << input << endl;
+    cout << "Definition file:   " << definition << endl;
+    cout << "Output file:       " << output << endl;
+}
+
 void readLine(node*& root, std::string line)
 {
     string variable1, logic, nodefalse, nodetrue;
-    float variable2;
-    int nodeindex;
+    float variable2=0;
+    string nodeindex;
     string word;
     stringstream stream(line);
     int counter = 1;
@@ -93,7 +99,7 @@ void readLine(node*& root, std::string line)
             {
             case 1:
             {
-                nodeindex = stoi(word);
+                nodeindex = word;
                 counter++;
                 break;
             }
@@ -130,15 +136,15 @@ void readLine(node*& root, std::string line)
             }
         }
     }
-  addElement(root, nodeindex,variable1,logic,variable2,nodefalse,nodetrue);
+  root = addElement(root, nodeindex,variable1,logic,variable2,nodefalse,nodetrue);
 }
 
 
-node* addElement(node* root, int nodeindex, string variable1, string logic, float variable2, string nodefalse, string nodetrue) {
+node* addElement(node* root, string nodeindex, string variable1, string logic, float variable2, string nodefalse, string nodetrue) {
     if (root == NULL) {
         node* newNode = new node;
         root = newNode;
-        newNode->key = nodeindex;
+        newNode->key = stoi(nodeindex);
         newNode->var1 = variable1;
         newNode->logic = logic;
         newNode->var2 = variable2;
@@ -147,6 +153,17 @@ node* addElement(node* root, int nodeindex, string variable1, string logic, floa
         newNode->right = NULL;
         newNode->left = NULL;
     }
-    cout<<root->key<<endl;
+
+    else if(nodeindex==root->condition_false){
+        root->left = addElement(root->left, nodeindex, variable1, logic, variable2, nodefalse, nodetrue);
+    }
+
+    else if (nodeindex == root->condition_true) {
+        root->right = addElement(root->right, nodeindex, variable1, logic, variable2, nodefalse, nodetrue);
+    }
+
+    else {
+        cout << "shit went from 0 to 100 pretty damn quick" << endl;
+    }
     return root;
 }

@@ -13,7 +13,7 @@ struct Definition
 
 struct node
 {
-    node* root = NULL;
+    //node* root = NULL;
     int key;
     string  var1;
     string logic;

@@ -41,6 +41,8 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
+    showFiles(input, definition, output);
+
     ifstream InputFile(input);
 
     vector<vector<string>> inputdata;
@@ -68,7 +70,7 @@ int main(int argc, char* argv[]) {
 
 
     ifstream DefinitionFile(definition);
-    node* root = nullptr;
+    node* root = NULL;
 
     while (getline(DefinitionFile, line)) {
         readLine(root, line);
@@ -78,13 +80,11 @@ int main(int argc, char* argv[]) {
     
     
     
-    cout << inputdata[1][0] <<" "<<inputdata.size()<< endl; // read testing purposes
+    cout << "Input data read test:  "<<inputdata[1][0] <<" "<<inputdata.size()<< endl; // read testing purposes
+ 
+    root = root->left;
 
-    
-
-    cout << input << definition << output;
-
-
+    cout <<"Left child key: "<< root->key << endl;
 
     return 0;
 }
