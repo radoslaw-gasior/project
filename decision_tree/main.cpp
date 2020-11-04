@@ -77,14 +77,20 @@ int main(int argc, char* argv[]) {
     }
     DefinitionFile.close();
 
+
+    vector<string>labels;
+    for (int i = 0; i < inputdata[0].size(); i++) {
+        labels.push_back(inputdata[0][i]);
+    }
+
     
     vector<vector<string>> processeddata;
 
     for (int i = 1; i < inputdata[0].size(); i++) {
 
-        for (int j = 0; j < inputdata.size(); i++) {
-            makedecision();
-        }
+       // for (int j = 0; j < inputdata.size(); i++) {
+            makedecision(root, labels, inputdata[i]);
+        
     }
     
     
