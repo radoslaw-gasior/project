@@ -86,11 +86,11 @@ int main(int argc, char* argv[]) {
     
     vector<vector<string>> processeddata;
 
-    for (int i = 1; i < inputdata[0].size(); i++) {
+    for (int i = 1; i < inputdata.size(); i++) {
 
-       // for (int j = 0; j < inputdata.size(); i++) {
-            makedecision(root, labels, inputdata[i]);
-        
+        cout << "decision " << i << ":   ";
+         makedecision(root, labels, inputdata[i]);
+         cout << endl;
     }
     
     
