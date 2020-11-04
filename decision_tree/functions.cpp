@@ -163,7 +163,11 @@ node* addElement(node* root, string nodeindex, string variable1, string logic, f
     }
 
     else {
-        cout << "shit went from 0 to 100 pretty damn quick" << endl;
+        cout << "Something's wrong I can feel it ~Eminem" << endl;
     }
     return root;
+}
+
+void makedecision() {
+
 }
