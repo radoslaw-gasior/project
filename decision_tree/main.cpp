@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include<sstream>
+#include<tuple>
 #include "functions.h"
 #include "structures.h"
 using namespace std;
@@ -12,6 +13,25 @@ using namespace std;
 
 
 int main(int argc, char* argv[]) {
+    
+    string s = "a";
+
+
+    bool has_only_digits = (s.find_first_not_of("0123456789") == std::string::npos);
+
+    if (has_only_digits == true) {
+        cout << "true" << endl;
+    }
+    else cout << "false" << endl;
+
+    string val = ">";
+    if (val == ">") {
+        cout << "yes!yes!yes!" << endl;
+    }
+
+
+    //END OF TESTING SECTION
+
 
     string input = inputSwitch(argc, argv);
     string definition = definitionSwitch(argc, argv);
@@ -43,9 +63,21 @@ int main(int argc, char* argv[]) {
         }
         i++;
     }
+    i = 0;
     InputFile.close();
 
 
+    ifstream DefinitionFile(definition);
+    node* root = nullptr;
+
+    while (getline(DefinitionFile, line)) {
+        readLine(root, line);
+    }
+    DefinitionFile.close();
+
+    
+    
+    
     cout << inputdata[1][0] <<" "<<inputdata.size()<< endl; // read testing purposes
 
     

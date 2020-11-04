@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include<tuple>
 #include "structures.h"
 #include "functions.h"
 using namespace std;
@@ -69,4 +70,83 @@ int switchcontrol(string input, string definition, string output) {
     }
 
     return 1;
+}
+
+void readLine(node*& root, std::string line)
+{
+    string variable1, logic, nodefalse, nodetrue;
+    float variable2;
+    int nodeindex;
+    string word;
+    stringstream stream(line);
+    int counter = 1;
+
+    while (stream >> word)
+    {
+       
+        
+        if (word == "%") {
+            break;
+        }
+        else {
+            switch (counter)
+            {
+            case 1:
+            {
+                nodeindex = stoi(word);
+                counter++;
+                break;
+            }
+            case 2:
+            {
+                variable1 = word;
+                counter++;
+                break;
+            }
+            case 3:
+            {
+                logic = word;
+                counter++;
+                break;
+            }
+            case 4:
+            {
+                variable2 = stof(word);
+                counter++;
+                break;
+            }
+            case 5:
+            {
+                nodefalse = word;
+                counter++;
+                break;
+            }
+            case 6:
+            {
+                nodetrue = word;
+                counter = 1;
+                break;
+            }
+            }
+        }
+    }
+  addElement(root, nodeindex,variable1,logic,variable2,nodefalse,nodetrue);
+}
+
+
+node* addElement(node* root, int nodeindex, string variable1, string logic, float variable2, string nodefalse, string nodetrue) {
+    if (root == NULL) {
+        node* newNode = new node;
+        root = newNode;
+        newNode->key = nodeindex;
+        newNode->var1 = variable1;
+        newNode->logic = logic;
+        newNode->var2 = variable2;
+        newNode->condition_false = nodefalse;
+        newNode->condition_true = nodetrue;
+        newNode->right = NULL;
+        newNode->left = NULL;
+    }
+    cout<<root->key<<endl;
+    return root;
 }

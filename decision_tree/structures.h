@@ -1,11 +1,28 @@
 #ifndef STRUCTURES_H
 #define STRUCTURES_H
+#include<tuple>
+using namespace std;
 
-struct files
+
+struct Definition
 {
-    std::string input;
-    std::string output;
-    std::string definition;
+    int node_index;
+    int index_false;
+    int index_true;
+};
+
+struct node
+{
+    node* root = NULL;
+    int key;
+    string  var1;
+    string logic;
+    float var2;
+    string condition_true;
+    string condition_false;
+    struct node* left, * right;
+
+
 };
 
 
