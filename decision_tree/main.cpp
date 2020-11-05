@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 #include<sstream>
-#include<tuple>
 #include "functions.h"
 #include "structures.h"
 using namespace std;
@@ -23,16 +22,7 @@ int main(int argc, char* argv[]) {
         cout << "true" << endl;
     }
     else cout << "false" << endl;
-
-    string val = ">";
-    if (val == ">") {
-        cout << "yes!yes!yes!" << endl;
-    }
-
-
-    //END OF TESTING SECTION
-
-
+ 
     string input = inputSwitch(argc, argv);
     string definition = definitionSwitch(argc, argv);
     string output = outputSwitch(argc, argv);
@@ -85,21 +75,16 @@ int main(int argc, char* argv[]) {
 
     
     vector<vector<string>> processeddata;
-
+    string decision;
     for (int i = 1; i < inputdata.size(); i++) {
 
         cout << "decision " << i << ":   ";
-         makedecision(root, labels, inputdata[i]);
+        makedecision(root, labels, inputdata[i]);
          cout << endl;
+       
     }
     
-    
-    cout << "Input data read test:  "<<inputdata[0][1] <<" "<<inputdata[0].size()<< endl; // read testing purposes
-    if (root != NULL) {
-        root = root->left;
-    }
 
-    cout <<"Left child key: "<< root->key << endl;
 
     return 0;
 }

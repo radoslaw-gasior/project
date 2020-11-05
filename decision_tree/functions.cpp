@@ -2,7 +2,6 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include<tuple>
 #include "structures.h"
 #include "functions.h"
 using namespace std;
@@ -78,7 +77,7 @@ void showFiles(string input, string definition, string output) {
     cout << "Output file:       " << output << endl;
 }
 
-void readLine(node*& root, std::string line)
+void readLine(node*& root, string line)
 {
     string variable1, logic, nodefalse, nodetrue;
     float variable2=0;
@@ -171,12 +170,12 @@ node* addElement(node* root, string nodeindex, string variable1, string logic, f
 void makedecision(node*root, vector<string> labels, vector<string> inputdata) {
    
    
-    if (root->left == NULL && root->right == NULL) {
-        cout << root->condition_true << endl;
-    }
-    else {
+    // if (root->left == NULL && root->right == NULL) {
+   //     cout << root->condition_true << endl;
+  //  }
+ //   else {
         string var1 = root->var1;
-        bool condition;
+        bool condition=false;
         int i = 0;
         while (i < labels.size()) {
             if (labels[i] == var1) {
@@ -188,9 +187,9 @@ void makedecision(node*root, vector<string> labels, vector<string> inputdata) {
 
         if (root->logic == ">") {
             if (stof(data) > root->var2) {
-                condition = true;
+                condition = false;
             }
-            else condition = false;
+            else condition = true;
         }
         else if (root->logic == "<") {
             if (stof(data) < root->var2) {
@@ -208,6 +207,7 @@ void makedecision(node*root, vector<string> labels, vector<string> inputdata) {
             }
             else {
                 cout << root->condition_true << endl;
+                //return root->condition_true;
             }
         }
         else if (condition==false) {
@@ -217,7 +217,10 @@ void makedecision(node*root, vector<string> labels, vector<string> inputdata) {
             }
             else {
                 cout << root->condition_false << endl;
+               // return root->condition_false;
             }
-        }
+    //    }
     }
 }
+
+
