@@ -185,6 +185,8 @@ void makedecision(node*root, vector<string> labels, vector<string> inputdata) {
         }
         string data=inputdata[i];
 
+        addtoVector(data);
+
         if (root->logic == ">") {
             if (stof(data) > root->var2) {
                 condition = false;
@@ -207,7 +209,7 @@ void makedecision(node*root, vector<string> labels, vector<string> inputdata) {
             }
             else {
                 cout << root->condition_true << endl;
-                //return root->condition_true;
+                addtoVector(root->condition_true);
             }
         }
         else if (condition==false) {
@@ -223,4 +225,15 @@ void makedecision(node*root, vector<string> labels, vector<string> inputdata) {
     }
 }
 
+node* deleteTree(node* root){
 
+    if (root != NULL) {
+        deleteTree(root->left);
+        deleteTree(root->right);
+
+
+        delete root;
+        root = NULL;
+        return root;
+    }
+}
