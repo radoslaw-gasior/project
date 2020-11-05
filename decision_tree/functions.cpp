@@ -170,10 +170,7 @@ node* addElement(node* root, string nodeindex, string variable1, string logic, f
 void makedecision(node*root, vector<string> labels, vector<string> inputdata) {
    
    
-    // if (root->left == NULL && root->right == NULL) {
-   //     cout << root->condition_true << endl;
-  //  }
- //   else {
+
         string var1 = root->var1;
         bool condition=false;
         int i = 0;
@@ -185,7 +182,6 @@ void makedecision(node*root, vector<string> labels, vector<string> inputdata) {
         }
         string data=inputdata[i];
 
-        addtoVector(data);
 
         if (root->logic == ">") {
             if (stof(data) > root->var2) {
@@ -209,7 +205,6 @@ void makedecision(node*root, vector<string> labels, vector<string> inputdata) {
             }
             else {
                 cout << root->condition_true << endl;
-                addtoVector(root->condition_true);
             }
         }
         else if (condition==false) {
@@ -219,9 +214,7 @@ void makedecision(node*root, vector<string> labels, vector<string> inputdata) {
             }
             else {
                 cout << root->condition_false << endl;
-               // return root->condition_false;
             }
-    //    }
     }
 }
 
