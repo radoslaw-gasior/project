@@ -3,7 +3,7 @@
 
 struct node
 {
-    int key;
+    std::string key;
     std::string  var1;
     std::string logic;
     float var2;

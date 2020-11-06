@@ -80,7 +80,7 @@ void showFiles(string input, string definition, string output) {
 void readLine(node*& root, string line)
 {
     string variable1, logic, nodefalse, nodetrue;
-    float variable2=0;
+    float variable2 = 0;
     string nodeindex;
     string word;
     stringstream stream(line);
@@ -88,8 +88,8 @@ void readLine(node*& root, string line)
 
     while (stream >> word)
     {
-       
-        
+
+
         if (word == "%") {
             break;
         }
@@ -135,15 +135,19 @@ void readLine(node*& root, string line)
             }
         }
     }
-  root = addElement(root, nodeindex,variable1,logic,variable2,nodefalse,nodetrue);
+    root = addElement(root, nodeindex, variable1, logic, variable2, nodefalse, nodetrue);
 }
 
+bool is_number(string s) {
+    bool only_digits = (s.find_first_not_of("0123456789") == string::npos);
+    return only_digits;
+}
 
 node* addElement(node* root, string nodeindex, string variable1, string logic, float variable2, string nodefalse, string nodetrue) {
     if (root == NULL) {
         node* newNode = new node;
         root = newNode;
-        newNode->key = stoi(nodeindex);
+        newNode->key = nodeindex;
         newNode->var1 = variable1;
         newNode->logic = logic;
         newNode->var2 = variable2;
@@ -152,73 +156,78 @@ node* addElement(node* root, string nodeindex, string variable1, string logic, f
         newNode->right = NULL;
         newNode->left = NULL;
     }
-
-    else if(nodeindex==root->condition_false){
-        root->left = addElement(root->left, nodeindex, variable1, logic, variable2, nodefalse, nodetrue);
-    }
-
-    else if (nodeindex == root->condition_true) {
-        root->right = addElement(root->right, nodeindex, variable1, logic, variable2, nodefalse, nodetrue);
-    }
-
     else {
-        cout << "Something's wrong I can feel it ~Eminem" << endl;
-    }
+        if (is_number(root->condition_false)) {
+            root->left = addElement(root->left, nodeindex, variable1, logic, variable2, nodefalse, nodetrue);
+        }
+
+        if (is_number(root->condition_true)) {
+            root->right = addElement(root->right, nodeindex, variable1, logic, variable2, nodefalse, nodetrue);
+        }
+
+        
+        if (is_number(root->condition_false)==false && is_number(root->condition_true)==false) {
+            root->left = addElement(root->left, nodeindex, variable1, logic, variable2, nodefalse, nodetrue);
+            root->right = addElement(root->right, nodeindex, variable1, logic, variable2, nodefalse, nodetrue);
+        }
+    } 
     return root;
 }
 
-void makedecision(node*root, vector<string> labels, vector<string> inputdata) {
-   
-   
-
-        string var1 = root->var1;
-        bool condition=false;
-        int i = 0;
-        while (i < labels.size()) {
-            if (labels[i] == var1) {
-                break;
-            }
-            else i++;
-        }
-        string data=inputdata[i];
 
 
-        if (root->logic == ">") {
-            if (stof(data) > root->var2) {
-                condition = false;
-            }
-            else condition = true;
-        }
-        else if (root->logic == "<") {
-            if (stof(data) < root->var2) {
-                condition = false;
-            }
-            else  {
-                condition = true;
-            }
-        }
+void makedecision(node* root, vector<string> labels, vector<string> inputdata) {
 
-        if (condition == true) {
-            if (root->right != NULL) {
-                root = root->right;
-                makedecision(root, labels, inputdata);
-            }
-            else {
-                cout << root->condition_true << endl;
-            }
+
+
+    string var1 = root->var1;
+    bool condition = false;
+    int i = 0;
+    while (i < labels.size()) {
+        if (labels[i] == var1) {
+            break;
         }
-        else if (condition==false) {
-            if (root->left != NULL) {
-                root = root->left;
-                makedecision(root, labels, inputdata);
-            }
-            else {
-                cout << root->condition_false << endl;
-            }
+        else i++;
+    }
+    string data = inputdata[i];
+
+
+    if (root->logic == ">") {
+        if (stof(data) > root->var2) {
+            condition = true;
+        }
+        else condition = false;
+    }
+    else if (root->logic == "<") {
+        if (stof(data) < root->var2) {
+            condition = true;
+        }
+        else {
+            condition = false;
+        }
+    }
+
+    if (condition) {
+        if (root->right != NULL) {
+            root = root->right;
+            makedecision(root, labels, inputdata);
+        }
+        else {
+            cout << root->condition_true << endl;
+        }
+    }
+    else {
+        if (root->left != NULL) {
+            root = root->left;
+            makedecision(root, labels, inputdata);
+        }
+        else {
+            cout << root->condition_false << endl;
+        }
     }
 }
 
-node* deleteTree(node* root){
+node* deleteTree(node* root) {
 
     if (root != NULL) {
         deleteTree(root->left);

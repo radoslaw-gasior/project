@@ -12,12 +12,12 @@ using namespace std;
 
 
 int main(int argc, char* argv[]) {
-    
-        string s = "a";
 
-        bool has_only_digits = (s.find_first_not_of("0123456789") == string::npos);
+    string s = "a";
 
- 
+    bool has_only_digits = (s.find_first_not_of("0123456789") == string::npos);
+
+
     string input = inputSwitch(argc, argv);
     string definition = definitionSwitch(argc, argv);
     string output = outputSwitch(argc, argv);
@@ -74,13 +74,13 @@ int main(int argc, char* argv[]) {
 
         cout << "decision " << i << ":   ";
         makedecision(root, labels, inputdata[i]);
-         cout << endl;
-         
-       
+        cout << endl;
+
+
     }
 
     //TO DO: GENERATE OUTPUT FILE
-   
+
     root = deleteTree(root);
     inputdata.clear();
 
