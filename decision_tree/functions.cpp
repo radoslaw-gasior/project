@@ -156,7 +156,7 @@ node* addElement(node* root, string nodeindex, string variable1, string logic, f
         newNode->right = NULL;
         newNode->left = NULL;
     }
-    else {
+    else if ((is_number(root->condition_false) && !is_number(root->condition_true))|| (!is_number(root->condition_false) && is_number(root->condition_true))) {
         if (is_number(root->condition_false)) {
             root->left = addElement(root->left, nodeindex, variable1, logic, variable2, nodefalse, nodetrue);
         }
@@ -164,13 +164,17 @@ node* addElement(node* root, string nodeindex, string variable1, string logic, f
         if (is_number(root->condition_true)) {
             root->right = addElement(root->right, nodeindex, variable1, logic, variable2, nodefalse, nodetrue);
         }
+    }
 
-        
-        if (is_number(root->condition_false)==false && is_number(root->condition_true)==false) {
+    else {
+        if (root->condition_false==nodeindex) {
             root->left = addElement(root->left, nodeindex, variable1, logic, variable2, nodefalse, nodetrue);
+        }
+
+        if (root->condition_true==nodeindex) {
             root->right = addElement(root->right, nodeindex, variable1, logic, variable2, nodefalse, nodetrue);
         }
-    } 
+    }
     return root;
 }
 
