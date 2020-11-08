@@ -13,11 +13,6 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
 
-    string s = "a";
-
-    bool has_only_digits = (s.find_first_not_of("0123456789") == string::npos);
-
-
     string input = inputSwitch(argc, argv);
     string definition = definitionSwitch(argc, argv);
     string output = outputSwitch(argc, argv);
@@ -56,11 +51,13 @@ int main(int argc, char* argv[]) {
 
     ifstream DefinitionFile(definition);
     node* root = NULL;
-
+    vector<string> DecisionLabels;
+    vector<string>* DL= &DecisionLabels;
     while (getline(DefinitionFile, line)) {
-        readLine(root, line);
+        readLine(root, line, DL);
     }
     DefinitionFile.close();
+    remove(DecisionLabels);
 
 
     vector<string>labels;
@@ -68,18 +65,24 @@ int main(int argc, char* argv[]) {
         labels.push_back(inputdata[0][i]);
     }
 
-    vector<vector<string>> processeddata;
-    string decision;
+    vector<string> decisions;
+    vector<string>* tmp=&decisions;
     for (int i = 1; i < inputdata.size(); i++) {
 
         cout << "decision " << i << ":   ";
-        makedecision(root, labels, inputdata[i]);
+        makedecision(root, labels, inputdata[i], tmp);
         cout << endl;
 
 
     }
+    
+    for (int i = 1; i < inputdata.size(); i++) {
 
-    //TO DO: GENERATE OUTPUT FILE
+        inputdata[i].push_back(decisions[i - 1]);
+
+    }
+
+    generateOutput(decisions, inputdata, output, DecisionLabels);
 
     root = deleteTree(root);
     inputdata.clear();

@@ -77,7 +77,12 @@ void showFiles(string input, string definition, string output) {
     cout << "Output file:       " << output << endl;
 }
 
-void readLine(node*& root, string line)
+bool is_number(string s) {
+    bool only_digits = (s.find_first_not_of("0123456789") == string::npos);
+    return only_digits;
+}
+
+void readLine(node*& root, string line, vector<string>* DL)
 {
     string variable1, logic, nodefalse, nodetrue;
     float variable2 = 0;
@@ -123,12 +128,18 @@ void readLine(node*& root, string line)
             case 5:
             {
                 nodefalse = word;
+                if (!is_number(nodefalse)) {
+                    DL->push_back(nodefalse);
+                }
                 counter++;
                 break;
             }
             case 6:
             {
                 nodetrue = word;
+                if (!is_number(nodetrue)) {
+                    DL->push_back(nodetrue);
+                }
                 counter = 1;
                 break;
             }
@@ -138,10 +149,7 @@ void readLine(node*& root, string line)
     root = addElement(root, nodeindex, variable1, logic, variable2, nodefalse, nodetrue);
 }
 
-bool is_number(string s) {
-    bool only_digits = (s.find_first_not_of("0123456789") == string::npos);
-    return only_digits;
-}
+
 
 node* addElement(node* root, string nodeindex, string variable1, string logic, float variable2, string nodefalse, string nodetrue) {
     if (root == NULL) {
@@ -180,7 +188,7 @@ node* addElement(node* root, string nodeindex, string variable1, string logic, f
 
 
 
-void makedecision(node* root, vector<string> labels, vector<string> inputdata) {
+void makedecision(node* root, vector<string> labels, vector<string> inputdata, vector<string>* tmp) {
 
 
 
@@ -214,21 +222,57 @@ void makedecision(node* root, vector<string> labels, vector<string> inputdata) {
     if (condition) {
         if (root->right != NULL) {
             root = root->right;
-            makedecision(root, labels, inputdata);
+            makedecision(root, labels, inputdata, tmp);
         }
         else {
-            cout << root->condition_true << endl;
+            cout << root->condition_true << endl; //delete later
+
+            tmp->push_back(root->condition_true);
         }
     }
     else {
         if (root->left != NULL) {
             root = root->left;
-            makedecision(root, labels, inputdata);
+            makedecision(root, labels, inputdata, tmp);
         }
         else {
-            cout << root->condition_false << endl;
+            cout << root->condition_false << endl; //delete later
+            tmp->push_back(root->condition_false);
+
         }
     }
+}
+
+void remove(vector<string>& v)
+{
+    auto end = v.end();
+    for (auto it = v.begin(); it != end; ++it) {
+        end = remove(it + 1, end, *it);
+    }
+
+    v.erase(end, v.end());
+}
+
+void generateOutput(vector<string>& tmp, vector<vector<string>>& inputdata, string output, vector<string>& DecisionLabels) {
+    int pos = (inputdata[1].size() - 1);
+    ofstream OutputFile(output);
+    if (!OutputFile.is_open()) {
+        cout << "Failed creating a file for output" << endl;
+    }
+    for (int i = 0; i < DecisionLabels.size(); i++) {
+        OutputFile << DecisionLabels[i] << ":" << endl;
+        for (int j = 1; j < inputdata.size(); j++) {
+            if (inputdata[j][pos] == DecisionLabels[i]) {
+
+                for (int k = 0; k < pos; k++) {
+                    OutputFile << inputdata[j][k] << "  ";
+                }
+                OutputFile << endl;
+            }
+        }
+        OutputFile << endl;
+    }
+    OutputFile.close();
 }
 
 node* deleteTree(node* root) {
@@ -242,4 +286,5 @@ node* deleteTree(node* root) {
         root = NULL;
         return root;
     }
+    else return 0;
 }
