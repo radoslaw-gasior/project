@@ -8,9 +8,6 @@
 #include "structures.h"
 using namespace std;
 
-
-
-
 int main(int argc, char* argv[]) {
 
     string input = inputSwitch(argc, argv);
@@ -23,42 +20,13 @@ int main(int argc, char* argv[]) {
 
     showFiles(input, definition, output);
 
-    ifstream InputFile(input);
-
     vector<vector<string>> inputdata;
-    string line;
-    int i = 0;
-    while (getline(InputFile, line)) {
+    ReadInputData(inputdata, input);
 
-        string data;
-        inputdata.push_back(vector<string>());
-        istringstream exist(line);
-
-        while (exist >> data) {
-
-            if (data == "%") {
-                break;
-            }
-            else {
-                inputdata[i].push_back(data);
-            }
-        }
-        i++;
-    }
-    i = 0;
-    InputFile.close();
-
-
-    ifstream DefinitionFile(definition);
     node* root = NULL;
     vector<string> DecisionLabels;
-    vector<string>* DL= &DecisionLabels;
-    while (getline(DefinitionFile, line)) {
-        readLine(root, line, DL);
-    }
-    DefinitionFile.close();
-    remove(DecisionLabels);
 
+    ReadDefinitionFile(root, DecisionLabels, definition);
 
     vector<string>labels;
     for (int i = 0; i < inputdata[0].size(); i++) {
@@ -66,26 +34,21 @@ int main(int argc, char* argv[]) {
     }
 
     vector<string> decisions;
-    vector<string>* tmp=&decisions;
     for (int i = 1; i < inputdata.size(); i++) {
-
-        cout << "decision " << i << ":   ";
-        makedecision(root, labels, inputdata[i], tmp);
-        cout << endl;
-
-
+        makedecision(root, labels, inputdata[i], decisions);
     }
     
     for (int i = 1; i < inputdata.size(); i++) {
-
         inputdata[i].push_back(decisions[i - 1]);
-
     }
 
-    generateOutput(decisions, inputdata, output, DecisionLabels);
+    generateOutput(inputdata, output, DecisionLabels);
 
     root = deleteTree(root);
     inputdata.clear();
+    decisions.clear();
+    DecisionLabels.clear();
+    labels.clear();
 
     return 0;
 }

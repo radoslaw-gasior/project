@@ -77,12 +77,43 @@ void showFiles(string input, string definition, string output) {
     cout << "Output file:       " << output << endl;
 }
 
+void ReadInputData(vector<vector<string>>& inputdata, string input) {
+    ifstream InputFile(input);
+    string line;
+    int i = 0;
+    while (getline(InputFile, line)) {
+        string data;
+        inputdata.push_back(vector<string>());
+        istringstream exist(line);
+        while (exist >> data) {
+            if (data == "%") {
+                break;
+            }
+            else {
+                inputdata[i].push_back(data);
+            }
+        }
+        i++;
+    }
+    InputFile.close();
+}
+
+void ReadDefinitionFile(node*& root, vector<string>& DecisionLabels, string definition) {
+    ifstream DefinitionFile(definition);
+    string line;
+    while (getline(DefinitionFile, line)) {
+        readLine(root, line, DecisionLabels);
+    }
+    DefinitionFile.close();
+    remove(DecisionLabels);
+}
+
 bool is_number(string s) {
     bool only_digits = (s.find_first_not_of("0123456789") == string::npos);
     return only_digits;
 }
 
-void readLine(node*& root, string line, vector<string>* DL)
+void readLine(node*& root, string line, vector<string>& DecisionLabels)
 {
     string variable1, logic, nodefalse, nodetrue;
     float variable2 = 0;
@@ -93,8 +124,6 @@ void readLine(node*& root, string line, vector<string>* DL)
 
     while (stream >> word)
     {
-
-
         if (word == "%") {
             break;
         }
@@ -129,7 +158,7 @@ void readLine(node*& root, string line, vector<string>* DL)
             {
                 nodefalse = word;
                 if (!is_number(nodefalse)) {
-                    DL->push_back(nodefalse);
+                    DecisionLabels.push_back(nodefalse);
                 }
                 counter++;
                 break;
@@ -138,7 +167,7 @@ void readLine(node*& root, string line, vector<string>* DL)
             {
                 nodetrue = word;
                 if (!is_number(nodetrue)) {
-                    DL->push_back(nodetrue);
+                    DecisionLabels.push_back(nodetrue);
                 }
                 counter = 1;
                 break;
@@ -148,8 +177,6 @@ void readLine(node*& root, string line, vector<string>* DL)
     }
     root = addElement(root, nodeindex, variable1, logic, variable2, nodefalse, nodetrue);
 }
-
-
 
 node* addElement(node* root, string nodeindex, string variable1, string logic, float variable2, string nodefalse, string nodetrue) {
     if (root == NULL) {
@@ -188,7 +215,7 @@ node* addElement(node* root, string nodeindex, string variable1, string logic, f
 
 
 
-void makedecision(node* root, vector<string> labels, vector<string> inputdata, vector<string>* tmp) {
+void makedecision(node* root, vector<string> labels, vector<string> inputdata, vector<string>& decisions) {
 
 
 
@@ -222,23 +249,19 @@ void makedecision(node* root, vector<string> labels, vector<string> inputdata, v
     if (condition) {
         if (root->right != NULL) {
             root = root->right;
-            makedecision(root, labels, inputdata, tmp);
+            makedecision(root, labels, inputdata, decisions);
         }
         else {
-            cout << root->condition_true << endl; //delete later
-
-            tmp->push_back(root->condition_true);
+            decisions.push_back(root->condition_true);
         }
     }
     else {
         if (root->left != NULL) {
             root = root->left;
-            makedecision(root, labels, inputdata, tmp);
+            makedecision(root, labels, inputdata, decisions);
         }
         else {
-            cout << root->condition_false << endl; //delete later
-            tmp->push_back(root->condition_false);
-
+            decisions.push_back(root->condition_false);
         }
     }
 }
@@ -249,11 +272,10 @@ void remove(vector<string>& v)
     for (auto it = v.begin(); it != end; ++it) {
         end = remove(it + 1, end, *it);
     }
-
     v.erase(end, v.end());
 }
 
-void generateOutput(vector<string>& tmp, vector<vector<string>>& inputdata, string output, vector<string>& DecisionLabels) {
+void generateOutput(vector<vector<string>>& inputdata, string output, vector<string>& DecisionLabels) {
     int pos = (inputdata[1].size() - 1);
     ofstream OutputFile(output);
     if (!OutputFile.is_open()) {
